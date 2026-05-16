@@ -26,6 +26,43 @@ Every day, tons of edible food from restaurants, events, and households are thro
 
 ## Project Structure
 
+### Architecture Flow
+
+```mermaid
+graph TD
+    %% Styling
+    classDef default fill:#f9f9f9,stroke:#333,stroke-width:1px;
+    classDef highlight fill:#e1f5fe,stroke:#0288d1,stroke-width:2px;
+    classDef database fill:#fff3e0,stroke:#f57c00,stroke-width:2px;
+    classDef user fill:#e8f5e9,stroke:#388e3c,stroke-width:2px;
+
+    App["📱 App.js (Navigation)"]:::highlight
+    Home["🏠 HomeScreen (Role Selection)"]:::default
+    
+    Donor["🧑‍🍳 DonorScreen"]:::user
+    NGO["🏢 NGOScreen"]:::user
+    Vol["🚴 VolunteerScreen"]:::user
+    Dash["📊 DashboardScreen"]:::user
+
+    DB[("🔥 Firebase Firestore")]:::database
+
+    App --> Home
+    Home -->|Role: Donor| Donor
+    Home -->|Role: NGO| NGO
+    Home -->|Role: Volunteer| Vol
+    Home -->|Analytics| Dash
+
+    Donor -- "1. Posts Donation" --> DB
+    DB -- "2. Real-time Feed" --> NGO
+    NGO -- "3. Claims Donation" --> DB
+    DB -- "4. Claimed Feed" --> Vol
+    Vol -- "5. Accepts Pickup" --> DB
+    
+    DB -. "Real-time Metrics" .-> Dash
+```
+
+### Directory Tree
+
 ```text
 HungerBridge/
 ├── App.js                   # Main application entry point and navigation setup
